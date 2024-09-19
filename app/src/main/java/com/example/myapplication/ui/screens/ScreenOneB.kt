@@ -19,7 +19,7 @@ fun ScreenOneB(padding: PaddingValues) {
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "Tela um B",
+            text = "Tela Um B",
             Modifier.padding(padding),
             fontSize = 40.sp
         )

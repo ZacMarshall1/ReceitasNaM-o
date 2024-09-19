@@ -36,9 +36,9 @@ import com.example.myapplication.ui.screens.ScreenTwo
 import kotlinx.coroutines.launch
 
 object ReceitasNaMaoRoutes {
-    val SCREEN_ONE_ROUTE = "tela_um"
-    val SCREEN_TWO_ROUTE = "tela_dois"
-    val SCREEN_THREE_ROUTE = "tela_tres"
+    val SCREEN_ONE_ROUTE = "Home"
+    val SCREEN_TWO_ROUTE = "Minhas Receitas"
+    val SCREEN_THREE_ROUTE = "Receitas Recomendadas"
 }
 
 @Composable
@@ -114,7 +114,7 @@ private fun DrawerContent(
                 modifier = Modifier.size(40.dp),
                 tint = getColorTexto(ehRotaUm)
             )
-            Text(text = "Tela 1", fontSize = 30.sp,
+            Text(text = "Home", fontSize = 25.sp,
                 color = getColorTexto(ehRotaUm))
         }
 
@@ -135,7 +135,7 @@ private fun DrawerContent(
                 modifier = Modifier.size(40.dp),
                 tint = getColorTexto(ehRotaDois)
             )
-            Text(text = "Tela 2", fontSize = 30.sp,
+            Text(text = "Minhas Receitas", fontSize = 25.sp,
                 color = getColorTexto(ehRotaDois))
         }
         TextButton(
@@ -150,12 +150,12 @@ private fun DrawerContent(
             }) {
             Icon(
                 //imageVector = Icons.Default.Call,
-                painter = painterResource(id = R.drawable.receita),
+                painter = painterResource(id = R.drawable.star),
                 contentDescription = "c",
                 modifier = Modifier.size(40.dp),
                 tint = getColorTexto(ehRotaTres)
             )
-            Text(text = "Tela 3", fontSize = 30.sp,
+            Text(text = "Receitas Recomendadas", fontSize = 25.sp,
                 color = getColorTexto(ehRotaTres))
         }
     }
@@ -163,7 +163,7 @@ private fun DrawerContent(
 
 fun getColorMenu(estaSelecionada: Boolean): Color {
     if (estaSelecionada){
-        return Color.Yellow
+        return Color.Magenta
     } else {
         return Color.Transparent
     }

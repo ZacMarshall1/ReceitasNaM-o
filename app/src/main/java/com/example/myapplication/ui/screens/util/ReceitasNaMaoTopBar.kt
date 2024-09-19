@@ -41,7 +41,7 @@ fun ReceitasNaMaoTopBar(drawerState: DrawerState){
             }
         },
         title = {
-            Text(text = "Planner", fontSize = 40.sp,
+            Text(text = "Receitas na Mão", fontSize = 40.sp,
                 color = Color.White,
                 fontWeight = FontWeight(600)
             )

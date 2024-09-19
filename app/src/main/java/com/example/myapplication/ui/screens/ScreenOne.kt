@@ -98,7 +98,7 @@ private fun BottomAppBarMinima(navController: NavController) {
         NavigationBarItem(
             selected = false,
             onClick = {
-                navController.navigate(ScreenOne.SCREEN_ONE_C_ROUTE)
+                navController.navigate(ScreenOne.SCREEN_ONE_B_ROUTE)
             }, icon = {
                 Icon(
                     imageVector = Icons.Default.DateRange,
