@@ -30,8 +30,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import br.edu.up.planner.ui.screens.ScreenOne
-import br.edu.up.planner.ui.screens.ScreenThree
+import com.example.myapplication.ui.screens.ScreenOne
+import com.example.myapplication.ui.screens.ScreenThree
 import com.example.myapplication.ui.screens.ScreenTwo
 import kotlinx.coroutines.launch
 
@@ -85,6 +85,8 @@ private fun DrawerContent(
     val rotaAtual = currentBack?.destination?.route ?: ReceitasNaMaoRoutes.SCREEN_ONE_ROUTE
 
     val ehRotaUm = rotaAtual == ReceitasNaMaoRoutes.SCREEN_ONE_ROUTE
+    val ehRotaDois = rotaAtual == ReceitasNaMaoRoutes.SCREEN_TWO_ROUTE
+    val ehRotaTres = rotaAtual == ReceitasNaMaoRoutes.SCREEN_THREE_ROUTE
 
     Column(
         modifier = Modifier
@@ -107,13 +109,54 @@ private fun DrawerContent(
             }) {
             Icon(
                 //imageVector = Icons.Default.Call,
-                painter = painterResource(id = R.drawable.checklist),
+                painter = painterResource(id = R.drawable.receita),
                 contentDescription = "c",
                 modifier = Modifier.size(40.dp),
                 tint = getColorTexto(ehRotaUm)
             )
             Text(text = "Tela 1", fontSize = 30.sp,
                 color = getColorTexto(ehRotaUm))
+        }
+
+        TextButton(
+            colors = ButtonDefaults.buttonColors(
+                containerColor = getColorMenu(ehRotaDois)
+            ),
+            onClick = {
+                navController.navigate(ReceitasNaMaoRoutes.SCREEN_TWO_ROUTE)
+                coroutineScope.launch {
+                    drawerState.close()
+                }
+            }) {
+            Icon(
+                //imageVector = Icons.Default.Call,
+                painter = painterResource(id = R.drawable.receita),
+                contentDescription = "c",
+                modifier = Modifier.size(40.dp),
+                tint = getColorTexto(ehRotaDois)
+            )
+            Text(text = "Tela 2", fontSize = 30.sp,
+                color = getColorTexto(ehRotaDois))
+        }
+        TextButton(
+            colors = ButtonDefaults.buttonColors(
+                containerColor = getColorMenu(ehRotaTres)
+            ),
+            onClick = {
+                navController.navigate(ReceitasNaMaoRoutes.SCREEN_THREE_ROUTE)
+                coroutineScope.launch {
+                    drawerState.close()
+                }
+            }) {
+            Icon(
+                //imageVector = Icons.Default.Call,
+                painter = painterResource(id = R.drawable.receita),
+                contentDescription = "c",
+                modifier = Modifier.size(40.dp),
+                tint = getColorTexto(ehRotaTres)
+            )
+            Text(text = "Tela 3", fontSize = 30.sp,
+                color = getColorTexto(ehRotaTres))
         }
     }
 }

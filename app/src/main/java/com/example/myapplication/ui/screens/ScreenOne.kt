@@ -1,4 +1,4 @@
-package br.edu.up.planner.ui.screens
+package com.example.myapplication.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
