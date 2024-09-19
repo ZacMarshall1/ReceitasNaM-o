@@ -26,16 +26,21 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import br.edu.up.planner.ui.screens.ScreenOne
+import br.edu.up.planner.ui.screens.ScreenThree
+import com.example.myapplication.ui.screens.ScreenTwo
 import kotlinx.coroutines.launch
 
 object ReceitasNaMaoRoutes {
     val SCREEN_ONE_ROUTE = "tela_um"
+    val SCREEN_TWO_ROUTE = "tela_dois"
+    val SCREEN_THREE_ROUTE = "tela_tres"
 }
-@Preview(
-    device = Devices.PIXEL
-)
+
 @Composable
 fun ReceitasNaMaoApp(){
 
@@ -55,7 +60,13 @@ fun ReceitasNaMaoApp(){
                 startDestination = ReceitasNaMaoRoutes.SCREEN_ONE_ROUTE)
             {
                 composable(ReceitasNaMaoRoutes.SCREEN_ONE_ROUTE){
-                    HomeScreen(drawerState)
+                    ScreenOne(drawerState)
+                }
+                composable(ReceitasNaMaoRoutes.SCREEN_TWO_ROUTE){
+                    ScreenTwo(drawerState)
+                }
+                composable(ReceitasNaMaoRoutes.SCREEN_THREE_ROUTE){
+                    ScreenThree(drawerState)
                 }
             }
         }
