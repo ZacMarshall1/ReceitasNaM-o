@@ -1,32 +1,16 @@
-package com.example.trainup
+package com.example as var
+
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.DrawerState
-import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.Icon
-import androidx.compose.material3.ModalNavigationDrawer
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.rememberDrawerState
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,30 +21,26 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.myapplication.ui.screens.receitas.ReceitasNavHost
 import kotlinx.coroutines.launch
 
+
 object ReceitasNaMaoRoutes {
-    val SCREEN_RECOMMENDED_ROUTE = "tela_um"
-    val SCREEN_MY_RECIPES_ROUTE = "tela_dois"
+    const val SCREEN_RECOMMENDED_ROUTE = "tela_um"
+    const val SCREEN_MY_RECIPES_ROUTE = "tela_dois"
 }
 
-@Preview(
-    device = Devices.PIXEL
-)
+@Preview(device = Devices.PIXEL)
 @Composable
 fun ReceitasNaMaoNavDrawer() {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-    val navCtrlDrawer = rememberNavController()
+    val navController = rememberNavController()
 
     ModalNavigationDrawer(
         drawerState = drawerState,
-        drawerContent = {
-            DrawerContent(navCtrlDrawer, drawerState)
-        },
+        drawerContent = { DrawerContent(navController, drawerState) },
         content = {
             NavHost(
-                navController = navCtrlDrawer,
+                navController = navController,
                 startDestination = ReceitasNaMaoRoutes.SCREEN_RECOMMENDED_ROUTE
             ) {
                 composable(ReceitasNaMaoRoutes.SCREEN_RECOMMENDED_ROUTE) {
@@ -77,10 +57,8 @@ fun ReceitasNaMaoNavDrawer() {
 @Composable
 private fun DrawerContent(navController: NavController, drawerState: DrawerState) {
     val coroutineScope = rememberCoroutineScope()
-    val currentBack by navController.currentBackStackEntryAsState()
-    val rotaAtual = currentBack?.destination?.route ?: ReceitasNaMaoRoutes.SCREEN_RECOMMENDED_ROUTE
-    val ehRotaUm = rotaAtual == ReceitasNaMaoRoutes.SCREEN_RECOMMENDED_ROUTE
-    val ehRotaDois = rotaAtual == ReceitasNaMaoRoutes.SCREEN_MY_RECIPES_ROUTE
+    val currentBackStack by navController.currentBackStackEntryAsState()
+    val currentRoute = currentBackStack?.destination?.route ?: ReceitasNaMaoRoutes.SCREEN_RECOMMENDED_ROUTE
 
     Column(
         modifier = Modifier
@@ -91,10 +69,9 @@ private fun DrawerContent(navController: NavController, drawerState: DrawerState
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-
         Image(
-            painter = painterResource(id = res.drawable.logoapp),
-            contentDescription = "Logo Receitas Na Mao",
+            painter = painterResource(id = R.drawable.logoapp),
+            contentDescription = "Logo Receitas Na Mão",
             modifier = Modifier
                 .fillMaxWidth()
                 .height(200.dp)
@@ -102,74 +79,93 @@ private fun DrawerContent(navController: NavController, drawerState: DrawerState
 
         Spacer(modifier = Modifier.height(40.dp))
 
-        // Botão de treino
-        TextButton(
-            colors = ButtonDefaults.buttonColors(
-                containerColor = getColorMenu(ehRotaUm)
-            ),
+        // Botão de Receita Recomendada
+        DrawerButton(
+            isSelected = currentRoute == ReceitasNaMaoRoutes.SCREEN_RECOMMENDED_ROUTE,
+            iconResId = R.drawable.academia,
+            text = "Receita",
             onClick = {
-                navController.navigate(ReceitasNaMaoRoutes.SCREEN_RECOMMENDED_ROUTE)
-                coroutineScope.launch {
-                    drawerState.close()
+                navController.navigate(ReceitasNaMaoRoutes.SCREEN_RECOMMENDED_ROUTE) {
+                    launchSingleTop = true
                 }
+                coroutineScope.launch { drawerState.close() }
             }
-        ) {
-            Icon(
-                painterResource(id = R.drawable.academia),
-                contentDescription = "Receita Recomendada",
-                modifier = Modifier.size(40.dp),
-                tint = getColorTexto(ehRotaUm)
-            )
-            Spacer(modifier = Modifier.width(10.dp))
-            Text(
-                text = "Receita",
-                fontSize = 30.sp,
-                color = getColorTexto(ehRotaUm)
-            )
-        }
+        )
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        // Botão de minhas receitas
-        TextButton(
-            colors = ButtonDefaults.buttonColors(
-                containerColor = getColorMenu(ehRotaDois)
-            ),
+        // Botão de Minhas Receitas
+        DrawerButton(
+            isSelected = currentRoute == ReceitasNaMaoRoutes.SCREEN_MY_RECIPES_ROUTE,
+            iconResId = R.drawable.config,
+            text = "Minhas Receitas",
             onClick = {
-                navController.navigate(ReceitasNaMaoRoutes.SCREEN_MY_RECIPES_ROUTE)
-                coroutineScope.launch {
-                    drawerState.close()
+                navController.navigate(ReceitasNaMaoRoutes.SCREEN_MY_RECIPES_ROUTE) {
+                    launchSingleTop = true
                 }
+                coroutineScope.launch { drawerState.close() }
             }
-        ) {
-            Icon(
-                painterResource(id = R.drawable.config),
-                contentDescription = "Minhas Receitas",
-                modifier = Modifier.size(40.dp),
-                tint = getColorTexto(ehRotaDois)
-            )
-            Spacer(modifier = Modifier.width(10.dp))
-            Text(
-                text = "Minhas Receitas",
-                fontSize = 25.sp,
-                color = getColorTexto(ehRotaDois)
-            )
-        }
+        )
     }
 }
 
-fun getColorMenu(estaSelecionada: Boolean): Color {
-    return if (estaSelecionada) {
-        Color(0xFF182E6F)
-    } else {
-        Color.Transparent
+@Composable
+private fun DrawerButton(
+    isSelected: Boolean,
+    iconResId: Int,
+    text: String,
+    onClick: () -> Unit
+) {
+    TextButton(
+        colors = ButtonDefaults.buttonColors(containerColor = getColorMenu(isSelected)),
+        onClick = onClick,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Icon(
+            painter = painterResource(id = iconResId),
+            contentDescription = text,
+            modifier = Modifier.size(40.dp),
+            tint = getColorTexto(isSelected)
+        )
+        Spacer(modifier = Modifier.width(10.dp))
+        Text(
+            text = text,
+            fontSize = 25.sp,
+            color = getColorTexto(isSelected)
+        )
     }
 }
 
-fun getColorTexto(estaSelecionada: Boolean): Color {
-    return if (estaSelecionada) {
-        Color.Yellow
-    } else {
-        Color(0xFFB0BEC5)
+fun getColorMenu(isSelected: Boolean): Color {
+    return if (isSelected) Color(0xFF182E6F) else Color.Transparent
+}
+
+fun getColorTexto(isSelected: Boolean): Color {
+    return if (isSelected) Color.Yellow else Color(0xFFB0BEC5)
+}
+
+@Composable
+fun ReceitaNavHost(drawerState: DrawerState) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text("Conteúdo da tela Receita Recomendada")
+    }
+}
+
+@Composable
+fun ScreenMyRecipes(drawerState: DrawerState) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text("Conteúdo da tela Minhas Receitas")
     }
 }
