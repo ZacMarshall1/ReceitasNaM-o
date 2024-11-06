@@ -34,7 +34,7 @@ fun ScreenHomeBottomBar(navController: NavController){
                     modifier = Modifier.size(40.dp)
                 )
             },
-            label = { Text(text = "Treino", color = Color.White) }
+            label = { Text(text = "Receita", color = Color.White) }
         )
         NavigationBarItem(
             selected = currentRoute == ScreenOne.SCREEN_MY_RECEPTS_HOST ,

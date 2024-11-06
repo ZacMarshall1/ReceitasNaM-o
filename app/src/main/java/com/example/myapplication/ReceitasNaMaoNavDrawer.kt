@@ -22,7 +22,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
 
-
 object ReceitasNaMaoRoutes {
     const val SCREEN_RECOMMENDED_ROUTE = "tela_um"
     const val SCREEN_MY_RECIPES_ROUTE = "tela_dois"
@@ -81,10 +80,11 @@ private fun DrawerContent(navController: NavController, drawerState: DrawerState
         // Botão de Receita Recomendada
         DrawerButton(
             isSelected = currentRoute == ReceitasNaMaoRoutes.SCREEN_RECOMMENDED_ROUTE,
-            iconResId = R.drawable.academia,
+            iconResId = R.drawable.bandeja,
             text = "Receita",
             onClick = {
                 navController.navigate(ReceitasNaMaoRoutes.SCREEN_RECOMMENDED_ROUTE) {
+                    popUpTo(ReceitasNaMaoRoutes.SCREEN_RECOMMENDED_ROUTE) { inclusive = true }
                     launchSingleTop = true
                 }
                 coroutineScope.launch { drawerState.close() }
@@ -100,6 +100,7 @@ private fun DrawerContent(navController: NavController, drawerState: DrawerState
             text = "Minhas Receitas",
             onClick = {
                 navController.navigate(ReceitasNaMaoRoutes.SCREEN_MY_RECIPES_ROUTE) {
+                    popUpTo(ReceitasNaMaoRoutes.SCREEN_MY_RECIPES_ROUTE) { inclusive = true }
                     launchSingleTop = true
                 }
                 coroutineScope.launch { drawerState.close() }

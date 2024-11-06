@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.myapplication.ui.screens.receitas.TelaReceitas
+
 
 object ScreenOne {
     val SCREEN_HOME_HOST =  "Home"

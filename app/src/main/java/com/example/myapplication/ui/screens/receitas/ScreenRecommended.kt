@@ -38,7 +38,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.R
 import com.example.myapplication.ui.screens.util.ReceitasNaMaoTopBar
 import com.example.myapplication.ui.screens.util.ScreenHomeBottomBar
-import com.example.trainup.ReceitasNaMaoRoutes
+import com.example.myapplication.ui.screens.receitas.ReceitaRotas
 
 object ReceitaADMRotas {
     val SCREEN_LIST_RECEPT_ROUTE = "listar receitas"
@@ -53,28 +53,28 @@ fun TelaReceitasADM(
     var receita = mutableListOf(
 
         Receita(
-            titulo = "Segunda-Feira",
-            descricao = "descrição do treino",
+            titulo = "1",
+            descricao = "descrição da receita",
             id = 1
         ),
         Receita(
-            titulo = "Terça-Feira",
-            descricao = "descrição do treino",
+            titulo = "2",
+            descricao = "descrição da receita",
             id = 2
         ),
         Receita(
-            titulo = "Quarta-Feira",
-            descricao = "descrição do treino",
+            titulo = "3",
+            descricao = "descrição da receita",
             id = 3
         ),
         Receita(
-            titulo = "Quinta-Feira",
-            descricao = "descrição do treino",
+            titulo = "4",
+            descricao = "descrição da receita",
             id = 3
         ),
         Receita(
-            titulo = "Sexta-Feira",
-            descricao = "descrição do treino",
+            titulo = "5",
+            descricao = "descrição da receita",
             id = 3
         ),
 
@@ -95,12 +95,12 @@ fun TelaReceitasADM(
                     modifier = Modifier.padding(16.dp)
                 ) {
                     Text(
-                        text = "Treinos",
+                        text = "Receitas",
                         fontSize = 24.sp //
                     )
                     Image(
                         painter = painterResource(id = R.drawable.home), //
-                        contentDescription = "Halter",
+                        contentDescription = "home icon",
                         modifier = Modifier.size(45.dp).padding(start = 8.dp) //
                     )
                 }
