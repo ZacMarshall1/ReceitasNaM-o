@@ -48,7 +48,7 @@ fun ScreenHomeBottomBar(navController: NavController){
                     modifier = Modifier.size(40.dp)
                 )
             },
-            label = { Text(text = "Dieta", color = Color.White) }
+            label = { Text(text = "Receitas Recomendadas", color = Color.White) }
         )
         NavigationBarItem(
             selected = currentRoute == ScreenOne.SCREEN_RECOMMENDED_RECEPTS_HOST ,
@@ -62,7 +62,7 @@ fun ScreenHomeBottomBar(navController: NavController){
                     modifier = Modifier.size(40.dp)
                 )
             },
-            label = { Text(text = "Evolução", color = Color.White) }
+            label = { Text(text = "Minhas Receitas", color = Color.White) }
         )
     }
 }

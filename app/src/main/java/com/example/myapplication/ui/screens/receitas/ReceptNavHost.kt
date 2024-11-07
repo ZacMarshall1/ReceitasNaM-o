@@ -24,10 +24,10 @@ fun ReceitasNavHost(drawerState: DrawerState){
         composable(ScreenOne.SCREEN_HOME_HOST){
             TelaHomeReceitas(drawerState, navCtrlBottomNav)
         }
-        composable(ScreenOne.SCREEN_MY_RECEPTS_HOST ){
+        composable(ScreenOne.SCREEN_RECOMMENDED_RECEPTS_HOST ){
             TelaMinhasReceitas(drawerState, navCtrlBottomNav)
         }
-        composable(ScreenOne.SCREEN_RECOMMENDED_RECEPTS_HOST){
+        composable(ScreenOne.SCREEN_MY_RECEPTS_HOST){
             TelaReceitasADM(drawerState, navCtrlBottomNav)
         }
     }

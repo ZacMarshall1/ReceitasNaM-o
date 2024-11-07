@@ -58,12 +58,12 @@ fun TelaMinhasReceitas(
                     modifier = Modifier.padding(16.dp)
                 ) {
                     Text(
-                        text = "Receitas",
+                        text = "Minhas Receitas",
                         fontSize = 24.sp
                     )
                     Image(
-                        painter = painterResource(id = R.drawable.home),
-                        contentDescription = "Halter",
+                        painter = painterResource(id = R.drawable.myrecipe),
+                        contentDescription = "Minhas Receitas",
                         modifier = Modifier.size(45.dp).padding(start = 8.dp)
                     )
                 }

@@ -95,12 +95,12 @@ fun TelaReceitasADM(
                     modifier = Modifier.padding(16.dp)
                 ) {
                     Text(
-                        text = "Receitas",
+                        text = "Receitas Recomendadas",
                         fontSize = 24.sp //
                     )
                     Image(
-                        painter = painterResource(id = R.drawable.home), //
-                        contentDescription = "home icon",
+                        painter = painterResource(id = R.drawable.favicon), //
+                        contentDescription = "fav icon",
                         modifier = Modifier.size(45.dp).padding(start = 8.dp) //
                     )
                 }

@@ -85,26 +85,6 @@ fun TelaHomeReceitas(
     Scaffold(
         topBar = { ReceitasNaMaoTopBar(drawerState) },
         content = {padding ->
-            Column(
-                modifier = Modifier.fillMaxSize().padding(padding),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Row(
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(16.dp)
-                ) {
-                    Text(
-                        text = "Receitas",
-                        fontSize = 24.sp
-                    )
-                    Image(
-                        painter = painterResource(id = R.drawable.home), //
-                        contentDescription = "home icon",
-                        modifier = Modifier.size(45.dp).padding(start = 8.dp) //
-                    )
-                }
-            }
 
             NavHost(
                 navController = navCtrlReceitas,
