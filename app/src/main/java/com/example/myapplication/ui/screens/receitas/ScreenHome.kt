@@ -104,7 +104,7 @@ fun TelaHomeReceitas(
                 }
             }
         },
-        floatingActionButton = {FloatButton()},
+        floatingActionButton = { FloatButton(navCtrlReceitas) },
         bottomBar = { ScreenHomeBottomBar(navCtrlBottomNav)}
     )
 
@@ -154,13 +154,18 @@ data class ReceitaHome(
     var id: Int? = null
 )
 
-@Composable
-private fun FloatButton(){
-    FloatingActionButton(onClick = {  }) {
-        Icon(
-            imageVector = Icons.Default.Add ,
-            contentDescription = "+" )
 
+@Composable
+private fun FloatButton(navController: NavController) {
+    FloatingActionButton(onClick = {
+        navController.navigate(ReceitaHomeRotas.SCREEN_INCLUDE_RECEPT_ROUTE) // Navega para a tela de inclusão
+    }) {
+        Icon(
+            imageVector = Icons.Default.Add,
+            contentDescription = "+"
+        )
     }
 }
+
+
 
