@@ -62,7 +62,7 @@ fun TelaMinhasReceitas(
                         fontSize = 24.sp
                     )
                     Image(
-                        painter = painterResource(id = R.drawable.myrecipe),
+                        painter = painterResource(id = R.drawable.receita),
                         contentDescription = "Minhas Receitas",
                         modifier = Modifier.size(45.dp).padding(start = 8.dp)
                     )

@@ -16,50 +16,53 @@ import com.example.myapplication.R
 import com.example.myapplication.ui.screens.receitas.ScreenOne
 
 @Composable
-fun ScreenHomeBottomBar(navController: NavController){
+fun ScreenHomeBottomBar(navController: NavController) {
 
     val navBackStackEntry = navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry.value?.destination?.route
 
     NavigationBar(containerColor = Color(0xFF1B1B1B)) {
         NavigationBarItem(
-            selected = currentRoute == ScreenOne.SCREEN_HOME_HOST ,
+            selected = currentRoute == ScreenOne.SCREEN_HOME_HOST,
             onClick = {
                 navController.navigate(ScreenOne.SCREEN_HOME_HOST)
             },
             icon = {
                 Icon(
-                    painter = painterResource(id = R.drawable.home) ,
+                    painter = painterResource(id = R.drawable.home),
                     contentDescription = "A",
-                    modifier = Modifier.size(40.dp)
+                    modifier = Modifier.size(40.dp),
+                    tint = Color.White
                 )
             },
-            label = { Text(text = "Receita", color = Color.White) }
+            label = { Text(text = "Home", color = Color.White) }
         )
         NavigationBarItem(
-            selected = currentRoute == ScreenOne.SCREEN_MY_RECEPTS_HOST ,
+            selected = currentRoute == ScreenOne.SCREEN_MY_RECEPTS_HOST,
             onClick = {
                 navController.navigate(ScreenOne.SCREEN_MY_RECEPTS_HOST)
             },
             icon = {
                 Icon(
-                    painter = painterResource(id = R.drawable.recept) ,
+                    painter = painterResource(id = R.drawable.estrela),
                     contentDescription = "A",
-                    modifier = Modifier.size(40.dp)
+                    modifier = Modifier.size(40.dp),
+                    tint = Color.White
                 )
             },
-            label = { Text(text = "Receitas Recomendadas", color = Color.White) }
+            label = { Text(text = "Recomendadas", color = Color.White) }
         )
         NavigationBarItem(
-            selected = currentRoute == ScreenOne.SCREEN_RECOMMENDED_RECEPTS_HOST ,
+            selected = currentRoute == ScreenOne.SCREEN_RECOMMENDED_RECEPTS_HOST,
             onClick = {
                 navController.navigate(ScreenOne.SCREEN_RECOMMENDED_RECEPTS_HOST)
             },
             icon = {
                 Icon(
-                    painter = painterResource(id = R.drawable.favicon),
+                    painter = painterResource(id = R.drawable.receita),
                     contentDescription = "A",
-                    modifier = Modifier.size(40.dp)
+                    modifier = Modifier.size(40.dp),
+                    tint = Color.White
                 )
             },
             label = { Text(text = "Minhas Receitas", color = Color.White) }

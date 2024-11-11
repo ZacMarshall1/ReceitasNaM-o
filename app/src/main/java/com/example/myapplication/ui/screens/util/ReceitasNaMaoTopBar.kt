@@ -17,12 +17,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.myapplication.ui.theme.TitleColor
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ReceitasNaMaoTopBar(drawerState: DrawerState){
+fun ReceitasNaMaoTopBar(drawerState: DrawerState) {
 
     val coroutineScope = rememberCoroutineScope()
 
@@ -37,15 +36,18 @@ fun ReceitasNaMaoTopBar(drawerState: DrawerState){
                     imageVector = Icons.Default.Menu,
                     contentDescription = "=",
                     tint = Color.White,
-                    modifier = Modifier.size(40.dp))
+                    modifier = Modifier.size(40.dp)
+                )
             }
         },
         title = {
-            Text(text = "Receitas na Mão", fontSize = 40.sp,
+            Text(
+                text = "Receitas na Mão",
+                fontSize = 40.sp,
                 color = Color.White,
                 fontWeight = FontWeight(600)
             )
         },
-        colors = TopAppBarDefaults.topAppBarColors(TitleColor)
+        colors = TopAppBarDefaults.topAppBarColors(Color.Red) // Define a cor do TopAppBar como vermelho
     )
 }

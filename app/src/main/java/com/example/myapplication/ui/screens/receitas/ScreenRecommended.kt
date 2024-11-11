@@ -99,7 +99,7 @@ fun TelaReceitasADM(
                         fontSize = 24.sp //
                     )
                     Image(
-                        painter = painterResource(id = R.drawable.favicon), //
+                        painter = painterResource(id = R.drawable.estrela), //
                         contentDescription = "fav icon",
                         modifier = Modifier.size(45.dp).padding(start = 8.dp) //
                     )
