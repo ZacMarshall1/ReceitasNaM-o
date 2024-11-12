@@ -1,4 +1,4 @@
-package com.example.trainup
+package com.example.myapplication
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

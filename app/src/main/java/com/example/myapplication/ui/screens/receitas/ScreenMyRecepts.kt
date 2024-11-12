@@ -23,11 +23,10 @@ import com.example.myapplication.ui.screens.util.ScreenHomeBottomBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 
-
 object ReceitaRotas {
     val SCREEN_LIST_RECEPT_ROUTE = "listar receitas"
     val SCREEN_INCLUDE_RECEPT_ROUTE = "incluir receitas"
-    val SCREEN_RECOMMENDED_ROUTE = "screen_recommended" // Adicionando a nova rota
+    val SCREEN_RECOMMENDED_ROUTE = "screen_recommended"
 }
 
 @Composable
@@ -49,7 +48,9 @@ fun TelaMinhasReceitas(
         topBar = { ReceitasNaMaoTopBar(drawerState) },
         content = { padding ->
             Column(
-                modifier = Modifier.fillMaxSize().padding(padding),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Row(
@@ -83,12 +84,12 @@ fun TelaMinhasReceitas(
                         }
                     }
                     composable(ReceitaRotas.SCREEN_RECOMMENDED_ROUTE) {
-                        ScreenRecommended() // Tela recomendada sendo chamada aqui
+                        ScreenRecommended()
                     }
                 }
             }
         },
-        floatingActionButton = { FloatButton() },
+        floatingActionButton = { FloatButton(navCtrlReceitas) },
         bottomBar = { ScreenHomeBottomBar(navCtrlBottomNav) }
     )
 }
@@ -103,16 +104,15 @@ private fun ScreenReceptListing(receita: MutableList<Receita>) {
         items(receita) { receita ->
             Card(
                 modifier = Modifier
-                    .padding(16.dp) // Espaço entre os cards
-                    .fillMaxWidth(), // Para que o card preencha a largura disponível
-                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp), // Sombra do ca
+                    .padding(16.dp)
+                    .fillMaxWidth(),
+                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
             ) {
-                // Conteúdo do Card
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
                         text = receita.titulo,
                         fontSize = 20.sp,
-                        style = MaterialTheme.typography.titleMedium // Estilo de texto do Material
+                        style = MaterialTheme.typography.titleMedium
                     )
                     Text(
                         text = receita.descricao,
@@ -127,7 +127,6 @@ private fun ScreenReceptListing(receita: MutableList<Receita>) {
 
 @Composable
 private fun ScreenRecommended() {
-    // Tela de Recomendações
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -138,15 +137,14 @@ private fun ScreenRecommended() {
 }
 
 @Composable
-private fun FloatButton() {
-    FloatingActionButton(onClick = { }) {
-        var icon = @Composable {
-            Icon(
-                painter = painterResource(id = R.drawable.icons),
-                contentDescription = "A",
-                modifier = Modifier.size(40.dp)
-            )
-        }
+private fun FloatButton(navController: NavController) {
+    FloatingActionButton(onClick = {
+        navController.navigate(ReceitaRotas.SCREEN_INCLUDE_RECEPT_ROUTE)
+    }) {
+        Icon(
+            imageVector = Icons.Default.Add,
+            contentDescription = "+"
+        )
     }
 }
 
@@ -156,4 +154,3 @@ data class Receita(
     var concluido: Boolean = false,
     var id: Int? = null
 )
-
