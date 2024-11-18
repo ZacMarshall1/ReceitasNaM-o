@@ -8,13 +8,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.myapplication.ui.screens.util.ScreenHomeBottomBar
-import com.example.myapplication.ui.screens.util.ReceitasNaMaoTopBar
 import androidx.navigation.NavController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun IncluirEditarReceitasScreen(navController: NavController) {
+fun IncluirEditarReceitasScreen(receitas: MutableList<Receita>, navController: NavController) {
     var titulo by remember { mutableStateOf(TextFieldValue("")) }
     var descricao by remember { mutableStateOf(TextFieldValue("")) }
 
@@ -35,14 +33,12 @@ fun IncluirEditarReceitasScreen(navController: NavController) {
             ) {
                 Text(text = "Adicionar ou Editar Receita", fontSize = 24.sp)
 
-
                 TextField(
                     value = titulo,
                     onValueChange = { titulo = it },
                     label = { Text("Título da Receita") },
                     modifier = Modifier.fillMaxWidth()
                 )
-
 
                 TextField(
                     value = descricao,

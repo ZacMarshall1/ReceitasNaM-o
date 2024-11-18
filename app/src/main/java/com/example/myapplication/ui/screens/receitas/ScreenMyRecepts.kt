@@ -26,7 +26,7 @@ object ReceitaRotas {
     val SCREEN_LIST_RECEPT_ROUTE = "listar receitas"
     val SCREEN_INCLUDE_RECEPT_ROUTE = "incluir receitas"
     val SCREEN_RECOMMENDED_ROUTE = "screen_recommended"
-    val SCREEN_RECIPE_DETAIL_ROUTE = "detalhes receita"  // Rota para a nova tela de detalhes
+    val SCREEN_RECIPE_DETAIL_ROUTE = "detalhes receita" // Rota para a nova tela de detalhes
 }
 
 @Composable
@@ -43,7 +43,7 @@ fun TelaMinhasReceitas(
         Receita(titulo = "Receita 6", descricao = "descrição da receita", id = 6),
         Receita(titulo = "Receita 7", descricao = "descrição da receita", id = 7),
         Receita(titulo = "Receita 8", descricao = "descrição da receita", id = 8),
-        Receita(titulo = "Receita 9", descricao = "descrição da receita", id = 9)
+        Receita(titulo = "Receita 9", descricao = "descrição da receita", id = 9),
     )
 
     val navCtrlReceitas = rememberNavController()
@@ -69,7 +69,9 @@ fun TelaMinhasReceitas(
                     Image(
                         painter = painterResource(id = R.drawable.receita),
                         contentDescription = "Minhas Receitas",
-                        modifier = Modifier.size(45.dp).padding(start = 8.dp)
+                        modifier = Modifier
+                            .size(45.dp)
+                            .padding(start = 8.dp)
                     )
                 }
 
@@ -82,10 +84,7 @@ fun TelaMinhasReceitas(
                         ScreenReceptListing(receita, navCtrlReceitas)
                     }
                     composable(ReceitaRotas.SCREEN_INCLUDE_RECEPT_ROUTE) {
-                        Column(modifier = Modifier.fillMaxSize()) {
-                            Spacer(modifier = Modifier.height(200.dp))
-                            Text(text = "Tela de inclusão de Receitas")
-                        }
+                        IncluirEditarReceitasScreen(receita,navCtrlReceitas)
                     }
                     composable(ReceitaRotas.SCREEN_RECOMMENDED_ROUTE) {
                         ScreenRecommended()
@@ -109,14 +108,16 @@ private fun ScreenReceptListing(receita: MutableList<Receita>, navController: Na
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        // 3 linhas com 3 cartões por linha
-        for (i in 0 until 3) { // 3 linhas
+        // 4 linhas com 3 cartões por linha
+        for (i in 0 until 3) { // 4 linhas
             Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
             ) {
                 // 3 cartões por linha
-                for (j in 0..2) {  // 3 colunas
+                for (j in 0..2) { // 3 colunas
                     val index = i * 3 + j
                     if (index < receita.size) {
                         val currentReceita = receita[index]
@@ -139,7 +140,7 @@ private fun ScreenReceptListing(receita: MutableList<Receita>, navController: Na
                                     verticalArrangement = Arrangement.Center
                                 ) {
                                     Image(
-                                        painter = painterResource(id = R.drawable.receita), // Substitua com o ícone de receita
+                                        painter = painterResource(id = R.drawable.receita),
                                         contentDescription = "Ícone de Receita",
                                         modifier = Modifier.size(50.dp)
                                     )
@@ -182,10 +183,3 @@ private fun FloatButton(navController: NavController) {
         )
     }
 }
-
-data class Receita(
-    var titulo: String,
-    var descricao: String,
-    var concluido: Boolean = false,
-    var id: Int? = null
-)
