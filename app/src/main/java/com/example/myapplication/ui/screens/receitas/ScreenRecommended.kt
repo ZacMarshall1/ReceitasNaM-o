@@ -1,9 +1,10 @@
 package com.example.myapplication.ui.screens.receitas
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -37,7 +38,11 @@ fun TelaReceitasADM(
         Receita(titulo = "2", descricao = "descrição da receita", id = 2),
         Receita(titulo = "3", descricao = "descrição da receita", id = 3),
         Receita(titulo = "4", descricao = "descrição da receita", id = 4),
-        Receita(titulo = "5", descricao = "descrição da receita", id = 5)
+        Receita(titulo = "5", descricao = "descrição da receita", id = 5),
+        Receita(titulo = "6", descricao = "descrição da receita", id = 6),
+        Receita(titulo = "7", descricao = "descrição da receita", id = 7),
+        Receita(titulo = "8", descricao = "descrição da receita", id = 8),
+        Receita(titulo = "9", descricao = "descrição da receita", id = 9)
     )
 
     val navCtrlReceitas = rememberNavController()
@@ -76,9 +81,9 @@ fun TelaReceitasADM(
                         ScreenReceptListing(receita)
                     }
                     composable(ReceitaADMRotas.SCREEN_INCLUDE_RECEPT_ROUTE) {
+                        // Implementar a tela de inclusão de receitas aqui
                         Column(modifier = Modifier.fillMaxSize()) {
-                            Spacer(modifier = Modifier.height(200.dp))
-                            Text(text = "Tela de inclusão de Receitas")
+                            // Tela de inclusão de receitas
                         }
                     }
                 }
@@ -91,27 +96,42 @@ fun TelaReceitasADM(
 
 @Composable
 private fun ScreenReceptListing(receita: MutableList<Receita>) {
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+    // Exibe as receitas em um grid de 3x3
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(3),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(receita) { receita ->
             Card(
                 modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .aspectRatio(1f) // Para garantir que os cards sejam quadrados
+                    .clickable {
+                        // Navegar para detalhes da receita
+                    },
                 elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
                 shape = RoundedCornerShape(8.dp)
             ) {
-                Column(modifier = Modifier.padding(16.dp)) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    // Imagem ou ícone para destacar
+                    Image(
+                        painter = painterResource(id = R.drawable.estrela), // Estrela ou ícone de destaque
+                        contentDescription = "Ícone de recomendação",
+                        modifier = Modifier.size(30.dp)
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = receita.titulo,
-                        fontSize = 20.sp,
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                    Text(
-                        text = receita.descricao,
                         fontSize = 16.sp,
                         style = MaterialTheme.typography.bodyMedium
                     )
@@ -133,3 +153,14 @@ private fun FloatButton(navController: NavController) {
     }
 }
 
+data class Receita(
+    var titulo: String,
+    var descricao: String,
+    var id: Int? = null
+)
+
+@Composable
+fun DetalhesReceitaScreen(recipeId: Int?) {
+    // Detalhes da receita
+    Text("Detalhes da receita $recipeId")
+}

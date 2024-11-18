@@ -1,16 +1,15 @@
 package com.example.myapplication.ui.screens.receitas
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -27,6 +26,7 @@ object ReceitaRotas {
     val SCREEN_LIST_RECEPT_ROUTE = "listar receitas"
     val SCREEN_INCLUDE_RECEPT_ROUTE = "incluir receitas"
     val SCREEN_RECOMMENDED_ROUTE = "screen_recommended"
+    val SCREEN_RECIPE_DETAIL_ROUTE = "detalhes receita"  // Rota para a nova tela de detalhes
 }
 
 @Composable
@@ -35,11 +35,15 @@ fun TelaMinhasReceitas(
     navCtrlBottomNav: NavController
 ) {
     val receita = mutableListOf(
-        Receita(titulo = "Segunda-Feira", descricao = "descrição da receita", id = 1),
-        Receita(titulo = "Terça-Feira", descricao = "descrição da receita", id = 2),
-        Receita(titulo = "Quarta-Feira", descricao = "descrição da receita", id = 3),
-        Receita(titulo = "Quinta-Feira", descricao = "descrição da receita", id = 4),
-        Receita(titulo = "Sexta-Feira", descricao = "descrição da receita", id = 5)
+        Receita(titulo = "Receita 1", descricao = "descrição da receita", id = 1),
+        Receita(titulo = "Receita 2", descricao = "descrição da receita", id = 2),
+        Receita(titulo = "Receita 3", descricao = "descrição da receita", id = 3),
+        Receita(titulo = "Receita 4", descricao = "descrição da receita", id = 4),
+        Receita(titulo = "Receita 5", descricao = "descrição da receita", id = 5),
+        Receita(titulo = "Receita 6", descricao = "descrição da receita", id = 6),
+        Receita(titulo = "Receita 7", descricao = "descrição da receita", id = 7),
+        Receita(titulo = "Receita 8", descricao = "descrição da receita", id = 8),
+        Receita(titulo = "Receita 9", descricao = "descrição da receita", id = 9)
     )
 
     val navCtrlReceitas = rememberNavController()
@@ -75,7 +79,7 @@ fun TelaMinhasReceitas(
                     modifier = Modifier.padding(top = 45.dp)
                 ) {
                     composable(ReceitaRotas.SCREEN_LIST_RECEPT_ROUTE) {
-                        ScreenReceptListing(receita)
+                        ScreenReceptListing(receita, navCtrlReceitas)
                     }
                     composable(ReceitaRotas.SCREEN_INCLUDE_RECEPT_ROUTE) {
                         Column(modifier = Modifier.fillMaxSize()) {
@@ -86,6 +90,10 @@ fun TelaMinhasReceitas(
                     composable(ReceitaRotas.SCREEN_RECOMMENDED_ROUTE) {
                         ScreenRecommended()
                     }
+                    composable("${ReceitaRotas.SCREEN_RECIPE_DETAIL_ROUTE}/{recipeId}") { backStackEntry ->
+                        val recipeId = backStackEntry.arguments?.getString("recipeId")?.toInt()
+                        DetalhesReceitaScreen(recipeId)
+                    }
                 }
             }
         },
@@ -95,30 +103,57 @@ fun TelaMinhasReceitas(
 }
 
 @Composable
-private fun ScreenReceptListing(receita: MutableList<Receita>) {
-    LazyColumn(
+private fun ScreenReceptListing(receita: MutableList<Receita>, navController: NavController) {
+    Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        items(receita) { receita ->
-            Card(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxWidth(),
-                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+        // 3 linhas com 3 cartões por linha
+        for (i in 0 until 3) { // 3 linhas
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
             ) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Text(
-                        text = receita.titulo,
-                        fontSize = 20.sp,
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                    Text(
-                        text = receita.descricao,
-                        fontSize = 16.sp,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
+                // 3 cartões por linha
+                for (j in 0..2) {  // 3 colunas
+                    val index = i * 3 + j
+                    if (index < receita.size) {
+                        val currentReceita = receita[index]
+                        Card(
+                            modifier = Modifier
+                                .weight(1f)
+                                .aspectRatio(1f) // Mantém os cards quadrados
+                                .clickable {
+                                    navController.navigate("${ReceitaRotas.SCREEN_RECIPE_DETAIL_ROUTE}/${currentReceita.id}")
+                                },
+                            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+                            shape = RoundedCornerShape(8.dp)
+                        ) {
+                            Box(
+                                contentAlignment = Alignment.Center,
+                                modifier = Modifier.fillMaxSize()
+                            ) {
+                                Column(
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.Center
+                                ) {
+                                    Image(
+                                        painter = painterResource(id = R.drawable.receita), // Substitua com o ícone de receita
+                                        contentDescription = "Ícone de Receita",
+                                        modifier = Modifier.size(50.dp)
+                                    )
+                                    Spacer(modifier = Modifier.height(8.dp))
+                                    Text(
+                                        text = currentReceita.titulo,
+                                        fontSize = 16.sp,
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        textAlign = TextAlign.Center
+                                    )
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

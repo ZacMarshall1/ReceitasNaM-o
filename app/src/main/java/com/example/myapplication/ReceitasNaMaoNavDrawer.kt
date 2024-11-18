@@ -67,10 +67,10 @@ fun ReceitasNaMaoNavDrawer() {
                 startDestination = ReceitasNaMaoRotas.SCREEN_HOME_ROUTE
             ) {
                 composable(ReceitasNaMaoRotas.SCREEN_HOME_ROUTE) {
-                    ReceitasNavHost(drawerState) // Chamando ReceitasNavHost aqui
+                    ReceitasNavHost(drawerState)
                 }
                 composable(ReceitasNaMaoRotas.SCREEN_MY_RECEPT_ROUTE) {
-                    ReceitasNavHost(drawerState) // Também chamando ReceitasNavHost aqui, pois ele inclui TelaMinhasReceitas
+                    ReceitasNavHost(drawerState)
                 }
             }
         }
