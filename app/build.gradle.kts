@@ -1,7 +1,9 @@
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
+    id("com.android.application") // Declara explicitamente
+    id("org.jetbrains.kotlin.android") // Substitui o alias por declaração direta
+    id("com.google.gms.google-services")
 }
+
 
 android {
     namespace = "com.example.myapplication"
@@ -70,4 +72,6 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
+    implementation("com.google.firebase:firebase-analytics")
 }
