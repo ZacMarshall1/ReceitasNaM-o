@@ -32,7 +32,7 @@ fun TelaReceitasADM(
     drawerState: DrawerState,
     navCtrlBottomNav: NavController
 ) {
-    val receitas = mutableListOf(
+    val receitas = listOf(
         Receita(titulo = "Receita 1", descricao = "Descrição da receita 1", id = 1),
         Receita(titulo = "Receita 2", descricao = "Descrição da receita 2", id = 2),
         Receita(titulo = "Receita 3", descricao = "Descrição da receita 3", id = 3),
@@ -75,7 +75,7 @@ fun TelaReceitasADM(
                     modifier = Modifier.padding(top = 16.dp)
                 ) {
                     composable(ReceitaADMRotas.SCREEN_LIST_RECEPT_ROUTE) {
-                        ScreenReceptListing(receitas)
+                        ScreenReceptListing(receitas, navCtrlReceitas)
                     }
                     composable(ReceitaADMRotas.SCREEN_INCLUDE_RECEPT_ROUTE) {
                         IncluirEditarReceitasScreen(receitas, navCtrlReceitas)
@@ -88,7 +88,7 @@ fun TelaReceitasADM(
 }
 
 @Composable
-private fun ScreenReceptListing(receitas: List<Receita>) {
+private fun ScreenReceptListing(receitas: List<Receita>, navController: NavController) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -182,7 +182,6 @@ private fun ScreenReceptListing(receitas: List<Receita>) {
                 }
             }
         }
-
 
         item {
             val receita = receitas[4]

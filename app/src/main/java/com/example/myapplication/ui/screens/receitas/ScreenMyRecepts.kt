@@ -19,6 +19,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.R
 import com.example.myapplication.ui.screens.util.ReceitasNaMaoTopBar
 import com.example.myapplication.ui.screens.util.ScreenHomeBottomBar
+import com.example.myapplication.ui.screens.receitas.IncluirEditarReceitasScreen
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 
@@ -81,10 +82,10 @@ fun TelaMinhasReceitas(
                     modifier = Modifier.padding(top = 45.dp)
                 ) {
                     composable(ReceitaRotas.SCREEN_LIST_RECEPT_ROUTE) {
-                        ScreenReceptListing(receita, navCtrlReceitas)
+                        ScreenReceptListing(receita = receita, navController = navCtrlReceitas)
                     }
                     composable(ReceitaRotas.SCREEN_INCLUDE_RECEPT_ROUTE) {
-                        IncluirEditarReceitasScreen(receita,navCtrlReceitas)
+                        IncluirEditarReceitasScreen(receitas = receita, navController = navCtrlReceitas) // Passando apenas o navController
                     }
                     composable(ReceitaRotas.SCREEN_RECOMMENDED_ROUTE) {
                         ScreenRecommended()
@@ -100,6 +101,7 @@ fun TelaMinhasReceitas(
         bottomBar = { ScreenHomeBottomBar(navCtrlBottomNav) }
     )
 }
+
 
 @Composable
 private fun ScreenReceptListing(receita: MutableList<Receita>, navController: NavController) {
