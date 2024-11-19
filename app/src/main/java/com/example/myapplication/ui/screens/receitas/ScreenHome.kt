@@ -15,6 +15,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import com.example.myapplication.R
 import com.example.myapplication.ui.screens.util.ReceitasNaMaoTopBar
 import com.example.myapplication.ui.screens.util.ScreenHomeBottomBar
@@ -39,27 +41,29 @@ fun TelaHomeReceitas(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Bom Dia! Oque Deseja Fazer hoje?",
+                    text = "Bom Dia! O que deseja fazer hoje?",
                     fontSize = 27.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(vertical = 16.dp)
                 )
-
 
                 Spacer(modifier = Modifier.weight(1f))
 
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 32.dp), // Ajuste da margem
+                        .padding(horizontal = 32.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(32.dp)
                 ) {
-
+                    // Card de "Receitas Recomendadas"
                     Card(
                         modifier = Modifier
                             .size(200.dp)
-                            .clickable { navCtrlBottomNav.navigate(ReceitaHomeRotas.SCREEN_LIST_RECEPT_ROUTE) },
+                            .clickable {
+                                // Navegação para a tela de Listar Receitas
+                                navCtrlBottomNav.navigate(ReceitaHomeRotas.SCREEN_LIST_RECEPT_ROUTE)
+                            },
                         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
                         shape = RoundedCornerShape(8.dp),
                         colors = CardDefaults.cardColors(containerColor = Color.LightGray)
@@ -71,7 +75,7 @@ fun TelaHomeReceitas(
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 Image(
                                     painter = painterResource(id = R.drawable.estrela),
-                                    contentDescription = "Ícone de Receita Recomendadas",
+                                    contentDescription = "Ícone de Receitas Recomendadas",
                                     modifier = Modifier.size(100.dp)
                                 )
                                 Spacer(modifier = Modifier.height(8.dp))
@@ -84,10 +88,14 @@ fun TelaHomeReceitas(
                         }
                     }
 
+                    // Card de "Minhas Receitas"
                     Card(
                         modifier = Modifier
                             .size(200.dp)
-                            .clickable { navCtrlBottomNav.navigate(ReceitaHomeRotas.SCREEN_MY_RECIPES_ROUTE) },
+                            .clickable {
+                                // Navegação para a tela de Minhas Receitas
+                                navCtrlBottomNav.navigate(ReceitaHomeRotas.SCREEN_MY_RECIPES_ROUTE)
+                            },
                         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
                         shape = RoundedCornerShape(8.dp),
                         colors = CardDefaults.cardColors(containerColor = Color.LightGray)
@@ -119,3 +127,5 @@ fun TelaHomeReceitas(
         bottomBar = { ScreenHomeBottomBar(navCtrlBottomNav) }
     )
 }
+
+

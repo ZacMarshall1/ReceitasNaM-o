@@ -21,7 +21,8 @@ fun ScreenHomeBottomBar(navController: NavController) {
     val navBackStackEntry = navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry.value?.destination?.route
 
-    NavigationBar(containerColor = Color(0xFF1B1B1B)) {
+    // Barra de navegação inferior com fundo preto
+    NavigationBar(containerColor = Color.Black) {  // Mudando a cor para preto diretamente
         NavigationBarItem(
             selected = currentRoute == ScreenOne.SCREEN_HOME_HOST,
             onClick = {
@@ -30,12 +31,12 @@ fun ScreenHomeBottomBar(navController: NavController) {
             icon = {
                 Icon(
                     painter = painterResource(id = R.drawable.home),
-                    contentDescription = "A",
+                    contentDescription = "Home",
                     modifier = Modifier.size(40.dp),
-                    tint = Color.White
+                    tint = Color.White // Cor dos ícones em branco
                 )
             },
-            label = { Text(text = "Home", color = Color.White) }
+            label = { Text(text = "Home", color = Color.White) }  // Cor do texto em branco
         )
         NavigationBarItem(
             selected = currentRoute == ScreenOne.SCREEN_MY_RECEPTS_HOST,
@@ -45,12 +46,12 @@ fun ScreenHomeBottomBar(navController: NavController) {
             icon = {
                 Icon(
                     painter = painterResource(id = R.drawable.estrela),
-                    contentDescription = "A",
+                    contentDescription = "Recomendadas",
                     modifier = Modifier.size(40.dp),
-                    tint = Color.White
+                    tint = Color.White // Cor dos ícones em branco
                 )
             },
-            label = { Text(text = "Recomendadas", color = Color.White) }
+            label = { Text(text = "Recomendadas", color = Color.White) } // Cor do texto em branco
         )
         NavigationBarItem(
             selected = currentRoute == ScreenOne.SCREEN_RECOMMENDED_RECEPTS_HOST,
@@ -60,12 +61,12 @@ fun ScreenHomeBottomBar(navController: NavController) {
             icon = {
                 Icon(
                     painter = painterResource(id = R.drawable.receita),
-                    contentDescription = "A",
+                    contentDescription = "Minhas Receitas",
                     modifier = Modifier.size(40.dp),
-                    tint = Color.White
+                    tint = Color.White // Cor dos ícones em branco
                 )
             },
-            label = { Text(text = "Minhas Receitas", color = Color.White) }
+            label = { Text(text = "Minhas Receitas", color = Color.White) } // Cor do texto em branco
         )
     }
 }

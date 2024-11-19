@@ -5,8 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,7 +20,6 @@ import com.example.myapplication.R
 import com.example.myapplication.ui.screens.util.ReceitasNaMaoTopBar
 import com.example.myapplication.ui.screens.util.ScreenHomeBottomBar
 
-// Classe de dados para representar as receitas
 data class Receita(val titulo: String, val descricao: String, val id: Int)
 
 object ReceitaADMRotas {
@@ -86,7 +83,6 @@ fun TelaReceitasADM(
                 }
             }
         },
-        // Não renderizando mais o botão de FAB nas receitas recomendadas
         bottomBar = { ScreenHomeBottomBar(navCtrlBottomNav) }
     )
 }
@@ -98,7 +94,19 @@ private fun ScreenReceptListing(receitas: List<Receita>) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        items(receitas) { receita ->
+        item {
+            Text(
+                text = "Receita do Dia",
+                fontSize = 22.sp,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp),
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center
+            )
+        }
+
+        item {
+            val receita = receitas[0]
             Card(
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
@@ -106,18 +114,106 @@ private fun ScreenReceptListing(receitas: List<Receita>) {
                 elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
                 shape = RoundedCornerShape(8.dp)
             ) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Text(
-                        text = receita.titulo,
-                        fontSize = 20.sp,
-                        style = MaterialTheme.typography.titleMedium
+                Box(modifier = Modifier.padding(16.dp)) {
+                    Image(
+                        painter = painterResource(id = R.drawable.estrela),
+                        contentDescription = "Ícone de estrela",
+                        modifier = Modifier
+                            .size(30.dp)
+                            .align(Alignment.TopStart)
                     )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = receita.descricao,
-                        fontSize = 16.sp,
-                        style = MaterialTheme.typography.bodyMedium
+                    Column(modifier = Modifier.padding(start = 40.dp)) {
+                        Text(
+                            text = receita.titulo,
+                            fontSize = 20.sp,
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = receita.descricao,
+                            fontSize = 16.sp,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+                }
+            }
+        }
+
+        item {
+            Text(
+                text = "Receitas da Semana",
+                fontSize = 22.sp,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp),
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center
+            )
+        }
+
+        items(receitas.drop(1).take(3)) { receita ->
+            Card(
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .fillMaxWidth(),
+                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+                shape = RoundedCornerShape(8.dp)
+            ) {
+                Box(modifier = Modifier.padding(16.dp)) {
+                    Image(
+                        painter = painterResource(id = R.drawable.estrela),
+                        contentDescription = "Ícone de estrela",
+                        modifier = Modifier
+                            .size(30.dp)
+                            .align(Alignment.TopStart)
                     )
+                    Column(modifier = Modifier.padding(start = 40.dp)) {
+                        Text(
+                            text = receita.titulo,
+                            fontSize = 20.sp,
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = receita.descricao,
+                            fontSize = 16.sp,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+                }
+            }
+        }
+
+
+        item {
+            val receita = receitas[4]
+            Card(
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .fillMaxWidth(),
+                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+                shape = RoundedCornerShape(8.dp)
+            ) {
+                Box(modifier = Modifier.padding(16.dp)) {
+                    Image(
+                        painter = painterResource(id = R.drawable.estrela),
+                        contentDescription = "Ícone de estrela",
+                        modifier = Modifier
+                            .size(30.dp)
+                            .align(Alignment.TopStart)
+                    )
+                    Column(modifier = Modifier.padding(start = 40.dp)) {
+                        Text(
+                            text = receita.titulo,
+                            fontSize = 20.sp,
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = receita.descricao,
+                            fontSize = 16.sp,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
                 }
             }
         }
