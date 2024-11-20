@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
@@ -13,7 +13,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun DetalhesReceitaScreen(recipeId: Int?, image: Bitmap?) {
+fun EditarReceitaScreen(
+    recipeId: Int?,
+    image: Bitmap?,
+    initialDescription: String = "",
+    initialIngredientes: String = "",
+    initialModoPreparo: String = "",
+    onSave: (String, String, String) -> Unit, // Callback para salvar as alterações
+    editarReceita: (Int, String, String, String) -> Unit // Callback para editar a receita no repositório
+) {
+    var descricao by remember { mutableStateOf(initialDescription) }
+    var ingredientes by remember { mutableStateOf(initialIngredientes) }
+    var modoPreparo by remember { mutableStateOf(initialModoPreparo) }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -21,14 +33,14 @@ fun DetalhesReceitaScreen(recipeId: Int?, image: Bitmap?) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Detalhes da Receita $recipeId",
+            text = "Editar Receita $recipeId",
             fontSize = 24.sp,
             style = MaterialTheme.typography.titleLarge
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Espaço para a imagem da receita
+        // Exibição ou edição da imagem
         image?.let {
             Image(
                 bitmap = it.asImageBitmap(),
@@ -49,31 +61,47 @@ fun DetalhesReceitaScreen(recipeId: Int?, image: Bitmap?) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Descrição da receita
-        Text("Descrição: Aqui vai a descrição detalhada da receita", fontSize = 18.sp)
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Ingredientes
-        Text(
-            text = "Ingredientes:",
-            fontSize = 20.sp,
-            style = MaterialTheme.typography.titleLarge
+        // Campo para editar a descrição
+        TextField(
+            value = descricao,
+            onValueChange = { descricao = it },
+            label = { Text("Descrição") },
+            modifier = Modifier.fillMaxWidth()
         )
-        // Liste os ingredientes aqui
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Modo de preparo
-        Text(
-            text = "Modo de Preparo:",
-            fontSize = 20.sp,
-            style = MaterialTheme.typography.titleLarge
+        // Campo para editar ingredientes
+        TextField(
+            value = ingredientes,
+            onValueChange = { ingredientes = it },
+            label = { Text("Ingredientes") },
+            modifier = Modifier.fillMaxWidth()
         )
-        // Adicione o modo de preparo aqui
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Qualquer outro detalhe, como tempo de preparo, rendimento, etc.
+        // Campo para editar modo de preparo
+        TextField(
+            value = modoPreparo,
+            onValueChange = { modoPreparo = it },
+            label = { Text("Modo de Preparo") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // Botão para salvar alterações
+        Button(
+            onClick = {
+                recipeId?.let { id ->
+                    // Chamada da função editarReceita
+                    editarReceita(id, descricao, ingredientes, modoPreparo)
+                }
+            },
+            modifier = Modifier.align(Alignment.End)
+        ) {
+            Text("Salvar")
+        }
     }
 }

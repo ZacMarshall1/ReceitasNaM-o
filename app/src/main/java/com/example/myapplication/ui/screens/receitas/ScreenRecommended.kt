@@ -21,7 +21,7 @@ import com.example.myapplication.R
 import com.example.myapplication.ui.screens.util.ReceitasNaMaoTopBar
 import com.example.myapplication.ui.screens.util.ScreenHomeBottomBar
 
-data class Receita(val titulo: String, val descricao: String, val id: Int)
+data class Receita(var titulo: String, var descricao: String, val id: Int)
 
 object ReceitaADMRotas {
     const val SCREEN_LIST_RECEPT_ROUTE = "listar_receitas"

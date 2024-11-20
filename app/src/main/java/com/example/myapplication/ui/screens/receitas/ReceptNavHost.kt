@@ -18,17 +18,18 @@ object ScreenOne {
 fun ReceitasNavHost(drawerState: DrawerState){
 
     val navCtrlBottomNav = rememberNavController()
-    NavHost(navController = navCtrlBottomNav,
-        startDestination = ScreenOne.SCREEN_HOME_HOST
-    ){
-        composable(ScreenOne.SCREEN_HOME_HOST){
+    NavHost(
+        navController = navCtrlBottomNav,
+        startDestination = ReceitaHomeRotas.SCREEN_HOME_HOST
+    ) {
+        composable(ReceitaHomeRotas.SCREEN_HOME_HOST) {
             TelaHomeReceitas(drawerState, navCtrlBottomNav)
         }
-        composable(ScreenOne.SCREEN_RECOMMENDED_RECEPTS_HOST ){
-            TelaMinhasReceitas(drawerState, navCtrlBottomNav)
-        }
-        composable(ScreenOne.SCREEN_MY_RECEPTS_HOST){
+        composable(ReceitaHomeRotas.SCREEN_LIST_RECEPT_ROUTE) {
             TelaReceitasADM(drawerState, navCtrlBottomNav)
+        }
+        composable(ReceitaHomeRotas.SCREEN_MY_RECIPES_ROUTE) {
+            TelaMinhasReceitas(drawerState, navCtrlBottomNav)
         }
     }
 }

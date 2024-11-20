@@ -22,8 +22,9 @@ import com.example.myapplication.ui.screens.util.ReceitasNaMaoTopBar
 import com.example.myapplication.ui.screens.util.ScreenHomeBottomBar
 
 object ReceitaHomeRotas {
-    const val SCREEN_LIST_RECEPT_ROUTE = "listar_receitas"
-    const val SCREEN_MY_RECIPES_ROUTE = "minhas_receitas"
+    const val SCREEN_HOME_HOST = "Home"
+    const val SCREEN_LIST_RECEPT_ROUTE = "Receitas Recomendadas"
+    const val SCREEN_MY_RECIPES_ROUTE = "Minhas Receitas"
 }
 
 @Composable
@@ -41,7 +42,7 @@ fun TelaHomeReceitas(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Bom Dia! O que deseja fazer hoje?",
+                    text = "Olá! O que deseja fazer hoje?",
                     fontSize = 27.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(vertical = 16.dp)
@@ -127,5 +128,3 @@ fun TelaHomeReceitas(
         bottomBar = { ScreenHomeBottomBar(navCtrlBottomNav) }
     )
 }
-
-
