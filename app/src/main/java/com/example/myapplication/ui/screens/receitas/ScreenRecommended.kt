@@ -1,6 +1,7 @@
 package com.example.myapplication.ui.screens.receitas
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -24,7 +25,7 @@ data class Receita(val titulo: String, val descricao: String, val id: Int)
 
 object ReceitaADMRotas {
     const val SCREEN_LIST_RECEPT_ROUTE = "listar_receitas"
-    const val SCREEN_INCLUDE_RECEPT_ROUTE = "incluir_receitas"
+    const val SCREEN_DETAILS_RECEPT_ROUTE = "detalhes_receitas"
 }
 
 @Composable
@@ -32,7 +33,7 @@ fun TelaReceitasADM(
     drawerState: DrawerState,
     navCtrlBottomNav: NavController
 ) {
-    val receitas = mutableListOf(
+    val receitas = listOf(
         Receita(titulo = "Receita 1", descricao = "Descrição da receita 1", id = 1),
         Receita(titulo = "Receita 2", descricao = "Descrição da receita 2", id = 2),
         Receita(titulo = "Receita 3", descricao = "Descrição da receita 3", id = 3),
@@ -75,10 +76,11 @@ fun TelaReceitasADM(
                     modifier = Modifier.padding(top = 16.dp)
                 ) {
                     composable(ReceitaADMRotas.SCREEN_LIST_RECEPT_ROUTE) {
-                        ScreenReceptListing(receitas)
+                        ScreenReceptListing(receitas, navCtrlReceitas)
                     }
-                    composable(ReceitaADMRotas.SCREEN_INCLUDE_RECEPT_ROUTE) {
-                        IncluirEditarReceitasScreen(receitas, navCtrlReceitas)
+                    composable("${ReceitaADMRotas.SCREEN_DETAILS_RECEPT_ROUTE}/{receitaId}") { backStackEntry ->
+                        val receitaId = backStackEntry.arguments?.getString("receitaId")?.toInt() ?: 0
+                        DetalhesRecomendadas(receitaId = receitaId, receitas = receitas)
                     }
                 }
             }
@@ -87,8 +89,10 @@ fun TelaReceitasADM(
     )
 }
 
+
+
 @Composable
-private fun ScreenReceptListing(receitas: List<Receita>) {
+private fun ScreenReceptListing(receitas: List<Receita>, navCtrl: NavController) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -98,7 +102,10 @@ private fun ScreenReceptListing(receitas: List<Receita>) {
             Card(
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .clickable {
+                        navCtrl.navigate("${ReceitaADMRotas.SCREEN_DETAILS_RECEPT_ROUTE}/${receita.id}")
+                    },
                 elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
                 shape = RoundedCornerShape(8.dp)
             ) {

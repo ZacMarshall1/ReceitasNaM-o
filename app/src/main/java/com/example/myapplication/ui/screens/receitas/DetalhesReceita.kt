@@ -1,18 +1,51 @@
 package com.example.myapplication.ui.screens.receitas
 
+import android.graphics.Bitmap
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun DetalhesReceitaScreen(recipeId: Int?) {
-    // Aqui você pode buscar os detalhes da receita usando o `recipeId` e exibir as informações
-    Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-        Text("Detalhes da Receita $recipeId", fontSize = 24.sp)
+fun DetalhesReceitaScreen(recipeId: Int?, image: Bitmap?) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "Detalhes da Receita $recipeId",
+            fontSize = 24.sp,
+            style = MaterialTheme.typography.titleLarge
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Espaço para a imagem da receita
+        image?.let {
+            Image(
+                bitmap = it.asImageBitmap(),
+                contentDescription = "Imagem da Receita",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .height(200.dp)
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            )
+        } ?: run {
+            Text(
+                text = "Imagem não disponível",
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(8.dp)
+            )
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -22,13 +55,21 @@ fun DetalhesReceitaScreen(recipeId: Int?) {
         Spacer(modifier = Modifier.height(16.dp))
 
         // Ingredientes
-        Text("Ingredientes:", fontSize = 20.sp, style = MaterialTheme.typography.titleLarge)
+        Text(
+            text = "Ingredientes:",
+            fontSize = 20.sp,
+            style = MaterialTheme.typography.titleLarge
+        )
         // Liste os ingredientes aqui
 
         Spacer(modifier = Modifier.height(16.dp))
 
         // Modo de preparo
-        Text("Modo de Preparo:", fontSize = 20.sp, style = MaterialTheme.typography.titleLarge)
+        Text(
+            text = "Modo de Preparo:",
+            fontSize = 20.sp,
+            style = MaterialTheme.typography.titleLarge
+        )
         // Adicione o modo de preparo aqui
 
         Spacer(modifier = Modifier.height(16.dp))
