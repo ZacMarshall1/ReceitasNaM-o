@@ -39,9 +39,9 @@ fun ScreenHomeBottomBar(navController: NavController) {
             label = { Text(text = "Home", color = Color.White) }  // Cor do texto em branco
         )
         NavigationBarItem(
-            selected = currentRoute == ScreenOne.SCREEN_MY_RECEPTS_HOST,
+            selected = currentRoute == ScreenOne.SCREEN_RECOMMENDED_RECEPTS_HOST,
             onClick = {
-                navController.navigate(ScreenOne.SCREEN_MY_RECEPTS_HOST)
+                navController.navigate(ScreenOne.SCREEN_RECOMMENDED_RECEPTS_HOST)
             },
             icon = {
                 Icon(
@@ -54,9 +54,9 @@ fun ScreenHomeBottomBar(navController: NavController) {
             label = { Text(text = "Recomendadas", color = Color.White) } // Cor do texto em branco
         )
         NavigationBarItem(
-            selected = currentRoute == ScreenOne.SCREEN_RECOMMENDED_RECEPTS_HOST,
+            selected = currentRoute == ScreenOne.SCREEN_MY_RECEPTS_HOST,
             onClick = {
-                navController.navigate(ScreenOne.SCREEN_RECOMMENDED_RECEPTS_HOST)
+                navController.navigate(ScreenOne.SCREEN_MY_RECEPTS_HOST)
             },
             icon = {
                 Icon(

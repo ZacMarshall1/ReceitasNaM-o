@@ -4,6 +4,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -19,15 +21,12 @@ import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.R
 import com.example.myapplication.ui.screens.util.ReceitasNaMaoTopBar
 import com.example.myapplication.ui.screens.util.ScreenHomeBottomBar
-import com.example.myapplication.ui.screens.receitas.IncluirEditarReceitasScreen
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 
 object ReceitaRotas {
-    val SCREEN_LIST_RECEPT_ROUTE = "listar receitas"
-    val SCREEN_INCLUDE_RECEPT_ROUTE = "incluir receitas"
-    val SCREEN_RECOMMENDED_ROUTE = "screen_recommended"
-    val SCREEN_RECIPE_DETAIL_ROUTE = "detalhes receita" // Rota para a nova tela de detalhes
+    const val SCREEN_LIST_RECEPT_ROUTE = "listar receitas"
+    const val SCREEN_INCLUDE_RECEPT_ROUTE = "incluir receitas"
+    const val SCREEN_RECOMMENDED_ROUTE = "screen_recommended"
+    const val SCREEN_RECIPE_DETAIL_ROUTE = "detalhes receita"
 }
 
 @Composable
@@ -35,17 +34,13 @@ fun TelaMinhasReceitas(
     drawerState: DrawerState,
     navCtrlBottomNav: NavController
 ) {
-    val receita = mutableListOf(
-        Receita(titulo = "Receita 1", descricao = "descrição da receita", id = 1),
-        Receita(titulo = "Receita 2", descricao = "descrição da receita", id = 2),
-        Receita(titulo = "Receita 3", descricao = "descrição da receita", id = 3),
-        Receita(titulo = "Receita 4", descricao = "descrição da receita", id = 4),
-        Receita(titulo = "Receita 5", descricao = "descrição da receita", id = 5),
-        Receita(titulo = "Receita 6", descricao = "descrição da receita", id = 6),
-        Receita(titulo = "Receita 7", descricao = "descrição da receita", id = 7),
-        Receita(titulo = "Receita 8", descricao = "descrição da receita", id = 8),
-        Receita(titulo = "Receita 9", descricao = "descrição da receita", id = 9),
-    )
+    val receitas = remember {
+        mutableStateListOf(
+            Receita("Receita 1", "Descrição da Receita 1", 1),
+            Receita("Receita 2", "Descrição da Receita 2", 2),
+            Receita("Receita 3", "Descrição da Receita 3", 3)
+        )
+    }
 
     val navCtrlReceitas = rememberNavController()
 
@@ -79,20 +74,27 @@ fun TelaMinhasReceitas(
                 NavHost(
                     navController = navCtrlReceitas,
                     startDestination = ReceitaRotas.SCREEN_LIST_RECEPT_ROUTE,
-                    modifier = Modifier.padding(top = 45.dp)
+                    modifier = Modifier.padding(top = 16.dp)
                 ) {
                     composable(ReceitaRotas.SCREEN_LIST_RECEPT_ROUTE) {
-                        ScreenReceptListing(receita = receita, navController = navCtrlReceitas)
+                        ScreenReceptListing(receitas, navCtrlReceitas)
                     }
                     composable(ReceitaRotas.SCREEN_INCLUDE_RECEPT_ROUTE) {
-                        IncluirEditarReceitasScreen(receitas = receita, navController = navCtrlReceitas) // Passando apenas o navController
+                        IncluirReceitaScreen(receitas, navCtrlReceitas)
                     }
                     composable(ReceitaRotas.SCREEN_RECOMMENDED_ROUTE) {
                         ScreenRecommended()
                     }
                     composable("${ReceitaRotas.SCREEN_RECIPE_DETAIL_ROUTE}/{recipeId}") { backStackEntry ->
-                        val recipeId = backStackEntry.arguments?.getString("recipeId")?.toInt()
-                        DetalhesReceitaScreen(recipeId)
+                        val recipeId = backStackEntry.arguments?.getString("recipeId")?.toIntOrNull()
+                        val receitaDetalhe = receitas.find { it.id == recipeId }
+                        DetalhesReceitaScreen(
+                            navController = navCtrlReceitas,
+                            receita = receitaDetalhe,
+                            excluirReceita = { id ->
+                                receitas.removeIf { it.id == id } // Remove receita da lista
+                            }
+                        )
                     }
                 }
             }
@@ -102,31 +104,30 @@ fun TelaMinhasReceitas(
     )
 }
 
-
 @Composable
-private fun ScreenReceptListing(receita: MutableList<Receita>, navController: NavController) {
+private fun ScreenReceptListing(receitas: MutableList<Receita>, navController: NavController) {
+    val rows = (receitas.size + 2) / 3
+
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        // 4 linhas com 3 cartões por linha
-        for (i in 0 until 3) { // 4 linhas
+        for (i in 0 until rows) {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
             ) {
-                // 3 cartões por linha
-                for (j in 0..2) { // 3 colunas
+                for (j in 0 until 3) {
                     val index = i * 3 + j
-                    if (index < receita.size) {
-                        val currentReceita = receita[index]
+                    if (index < receitas.size) {
+                        val currentReceita = receitas[index]
                         Card(
                             modifier = Modifier
                                 .weight(1f)
-                                .aspectRatio(1f) // Mantém os cards quadrados
+                                .aspectRatio(1f)
                                 .clickable {
                                     navController.navigate("${ReceitaRotas.SCREEN_RECIPE_DETAIL_ROUTE}/${currentReceita.id}")
                                 },
@@ -156,6 +157,8 @@ private fun ScreenReceptListing(receita: MutableList<Receita>, navController: Na
                                 }
                             }
                         }
+                    } else {
+                        Spacer(modifier = Modifier.weight(1f).aspectRatio(1f))
                     }
                 }
             }
@@ -179,9 +182,6 @@ private fun FloatButton(navController: NavController) {
     FloatingActionButton(onClick = {
         navController.navigate(ReceitaRotas.SCREEN_INCLUDE_RECEPT_ROUTE)
     }) {
-        Icon(
-            imageVector = Icons.Default.Add,
-            contentDescription = "+"
-        )
+        Icon(imageVector = Icons.Default.Add, contentDescription = "+")
     }
 }

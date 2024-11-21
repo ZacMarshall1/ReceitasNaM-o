@@ -1,6 +1,7 @@
 package com.example.myapplication.ui.screens.receitas
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -20,11 +21,11 @@ import com.example.myapplication.R
 import com.example.myapplication.ui.screens.util.ReceitasNaMaoTopBar
 import com.example.myapplication.ui.screens.util.ScreenHomeBottomBar
 
-data class Receita(val titulo: String, val descricao: String, val id: Int)
+data class Receita(var titulo: String, var descricao: String, val id: Int)
 
 object ReceitaADMRotas {
     const val SCREEN_LIST_RECEPT_ROUTE = "listar_receitas"
-    const val SCREEN_INCLUDE_RECEPT_ROUTE = "incluir_receitas"
+    const val SCREEN_DETAILS_RECEPT_ROUTE = "detalhes_receitas"
 }
 
 @Composable
@@ -77,8 +78,9 @@ fun TelaReceitasADM(
                     composable(ReceitaADMRotas.SCREEN_LIST_RECEPT_ROUTE) {
                         ScreenReceptListing(receitas, navCtrlReceitas)
                     }
-                    composable(ReceitaADMRotas.SCREEN_INCLUDE_RECEPT_ROUTE) {
-                        IncluirEditarReceitasScreen(receitas, navCtrlReceitas)
+                    composable("${ReceitaADMRotas.SCREEN_DETAILS_RECEPT_ROUTE}/{receitaId}") { backStackEntry ->
+                        val receitaId = backStackEntry.arguments?.getString("receitaId")?.toInt() ?: 0
+                        DetalhesRecomendadas(receitaId = receitaId, receitas = receitas)
                     }
                 }
             }
@@ -87,108 +89,23 @@ fun TelaReceitasADM(
     )
 }
 
+
+
 @Composable
-private fun ScreenReceptListing(receitas: List<Receita>, navController: NavController) {
+private fun ScreenReceptListing(receitas: List<Receita>, navCtrl: NavController) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        item {
-            Text(
-                text = "Receita do Dia",
-                fontSize = 22.sp,
+        items(receitas) { receita ->
+            Card(
                 modifier = Modifier
+                    .padding(horizontal = 16.dp)
                     .fillMaxWidth()
-                    .padding(vertical = 16.dp),
-                textAlign = androidx.compose.ui.text.style.TextAlign.Center
-            )
-        }
-
-        item {
-            val receita = receitas[0]
-            Card(
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .fillMaxWidth(),
-                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-                shape = RoundedCornerShape(8.dp)
-            ) {
-                Box(modifier = Modifier.padding(16.dp)) {
-                    Image(
-                        painter = painterResource(id = R.drawable.estrela),
-                        contentDescription = "Ícone de estrela",
-                        modifier = Modifier
-                            .size(30.dp)
-                            .align(Alignment.TopStart)
-                    )
-                    Column(modifier = Modifier.padding(start = 40.dp)) {
-                        Text(
-                            text = receita.titulo,
-                            fontSize = 20.sp,
-                            style = MaterialTheme.typography.titleMedium
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = receita.descricao,
-                            fontSize = 16.sp,
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                    }
-                }
-            }
-        }
-
-        item {
-            Text(
-                text = "Receitas da Semana",
-                fontSize = 22.sp,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 16.dp),
-                textAlign = androidx.compose.ui.text.style.TextAlign.Center
-            )
-        }
-
-        items(receitas.drop(1).take(3)) { receita ->
-            Card(
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .fillMaxWidth(),
-                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-                shape = RoundedCornerShape(8.dp)
-            ) {
-                Box(modifier = Modifier.padding(16.dp)) {
-                    Image(
-                        painter = painterResource(id = R.drawable.estrela),
-                        contentDescription = "Ícone de estrela",
-                        modifier = Modifier
-                            .size(30.dp)
-                            .align(Alignment.TopStart)
-                    )
-                    Column(modifier = Modifier.padding(start = 40.dp)) {
-                        Text(
-                            text = receita.titulo,
-                            fontSize = 20.sp,
-                            style = MaterialTheme.typography.titleMedium
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = receita.descricao,
-                            fontSize = 16.sp,
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                    }
-                }
-            }
-        }
-
-        item {
-            val receita = receitas[4]
-            Card(
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .fillMaxWidth(),
+                    .clickable {
+                        navCtrl.navigate("${ReceitaADMRotas.SCREEN_DETAILS_RECEPT_ROUTE}/${receita.id}")
+                    },
                 elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
                 shape = RoundedCornerShape(8.dp)
             ) {
