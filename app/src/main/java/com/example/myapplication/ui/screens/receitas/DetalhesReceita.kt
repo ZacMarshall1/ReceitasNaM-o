@@ -1,30 +1,32 @@
 package com.example.myapplication.ui.screens.receitas
 
-import android.graphics.Bitmap
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 
 @Composable
-fun EditarReceitaScreen(
-    recipeId: Int?,
-    image: Bitmap?,
-    initialDescription: String = "",
-    initialIngredientes: String = "",
-    initialModoPreparo: String = "",
-    onSave: (String, String, String) -> Unit, // Callback para salvar as alterações
-    editarReceita: (Int, String, String, String) -> Unit // Callback para editar a receita no repositório
+fun DetalhesReceitaScreen(
+    navController: NavController,
+    receita: Receita?, // A receita pode ser nula
+    editarReceita: (Int, String, String, String) -> Unit // Função para editar receita
 ) {
-    var descricao by remember { mutableStateOf(initialDescription) }
-    var ingredientes by remember { mutableStateOf(initialIngredientes) }
-    var modoPreparo by remember { mutableStateOf(initialModoPreparo) }
+    // Verificação de nulidade para inicializar os estados
+    val descricaoInicial = receita?.descricao ?: ""
+
+    // Estados para os campos de edição
+    var descricao by remember { mutableStateOf(descricaoInicial) }
+    var isEditing by remember { mutableStateOf(false) } // Controle para exibir os campos de edição
+
+    if (receita == null) {
+        // Se a receita não for encontrada, exibe uma mensagem de erro
+        Text(text = "Receita não encontrada")
+        return
+    }
 
     Column(
         modifier = Modifier
@@ -32,76 +34,58 @@ fun EditarReceitaScreen(
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        // Título da tela
         Text(
-            text = "Editar Receita $recipeId",
+            text = "Detalhes da Receita: ${receita.titulo}",
             fontSize = 24.sp,
             style = MaterialTheme.typography.titleLarge
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Exibição ou edição da imagem
-        image?.let {
-            Image(
-                bitmap = it.asImageBitmap(),
-                contentDescription = "Imagem da Receita",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .height(200.dp)
-                    .fillMaxWidth()
-                    .padding(8.dp)
+        // Exibe os detalhes da receita
+        if (!isEditing) {
+            // Modo visualização
+            Text(text = "Descrição: ${receita.descricao}")
+            Spacer(modifier = Modifier.height(8.dp))
+        } else {
+            // Modo edição
+            TextField(
+                value = descricao,
+                onValueChange = { descricao = it },
+                label = { Text("Descrição") },
+                modifier = Modifier.fillMaxWidth()
             )
-        } ?: run {
-            Text(
-                text = "Imagem não disponível",
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(8.dp)
-            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
         }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Campo para editar a descrição
-        TextField(
-            value = descricao,
-            onValueChange = { descricao = it },
-            label = { Text("Descrição") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Campo para editar ingredientes
-        TextField(
-            value = ingredientes,
-            onValueChange = { ingredientes = it },
-            label = { Text("Ingredientes") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Campo para editar modo de preparo
-        TextField(
-            value = modoPreparo,
-            onValueChange = { modoPreparo = it },
-            label = { Text("Modo de Preparo") },
-            modifier = Modifier.fillMaxWidth()
-        )
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Botão para salvar alterações
-        Button(
-            onClick = {
-                recipeId?.let { id ->
-                    // Chamada da função editarReceita
-                    editarReceita(id, descricao, ingredientes, modoPreparo)
-                }
-            },
-            modifier = Modifier.align(Alignment.End)
-        ) {
-            Text("Salvar")
+        // Botão para editar ou salvar alterações
+        if (isEditing) {
+            Button(
+                onClick = {
+                    receita?.let {
+                        // Atualiza a receita com as novas informações
+                        isEditing = false // Desativa o modo de edição
+                    }
+                },
+                modifier = Modifier.align(Alignment.End)
+            ) {
+                Text("Salvar")
+            }
+        } else {
+            // Botão para entrar no modo de edição
+            Button(
+                onClick = {
+                    isEditing = true // Ativa o modo de edição
+                },
+                modifier = Modifier.align(Alignment.End)
+            ) {
+                Text("Editar Receita")
+            }
         }
     }
 }

@@ -81,7 +81,7 @@ fun TelaMinhasReceitas(
                         ScreenReceptListing(receitas, navCtrlReceitas)
                     }
                     composable(ReceitaRotas.SCREEN_INCLUDE_RECEPT_ROUTE) {
-                        IncluirEditarReceitasScreen(receitas, navCtrlReceitas)
+                        IncluirReceitaScreen(receitas, navCtrlReceitas)
                     }
                     composable(ReceitaRotas.SCREEN_RECOMMENDED_ROUTE) {
                         ScreenRecommended()
@@ -101,8 +101,8 @@ fun TelaMinhasReceitas(
 
 @Composable
 private fun ScreenReceptListing(receitas: MutableList<Receita>, navController: NavController) {
-    val rows = (receitas.size + 2) / 3 // Divide a lista em grupos de 3
-    var receitaParaExcluir by remember { mutableStateOf<Receita?>(null) } // Estado para confirmar exclusão
+    val rows = (receitas.size + 2) / 3
+    var receitaParaExcluir by remember { mutableStateOf<Receita?>(null) }
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -151,7 +151,6 @@ private fun ScreenReceptListing(receitas: MutableList<Receita>, navController: N
                                         textAlign = TextAlign.Center
                                     )
                                     Spacer(modifier = Modifier.height(8.dp))
-                                    // Botão de exclusão
                                     IconButton(onClick = { receitaParaExcluir = currentReceita }) {
                                         Icon(
                                             imageVector = Icons.Default.Delete,
@@ -168,7 +167,6 @@ private fun ScreenReceptListing(receitas: MutableList<Receita>, navController: N
                 }
             }
         }
-        // Confirmação de exclusão
         if (receitaParaExcluir != null) {
             AlertDialog(
                 onDismissRequest = { receitaParaExcluir = null },
@@ -226,67 +224,3 @@ private fun FloatButton(navController: NavController) {
         Icon(imageVector = Icons.Default.Add, contentDescription = "+")
     }
 }
-
-@Composable
-fun IncluirEditarReceitasScreen(
-    receitas: MutableList<Receita>,
-    navController: NavController,
-    receitaParaEditar: Receita? = null // Recebe uma receita para edição (opcional)
-) {
-    var titulo by remember { mutableStateOf(receitaParaEditar?.titulo ?: "") }
-    var descricao by remember { mutableStateOf(receitaParaEditar?.descricao ?: "") }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = if (receitaParaEditar == null) "Incluir Receita" else "Editar Receita",
-            fontSize = 24.sp
-        )
-
-        OutlinedTextField(
-            value = titulo,
-            onValueChange = { titulo = it },
-            label = { Text("Título da Receita") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        OutlinedTextField(
-            value = descricao,
-            onValueChange = { descricao = it },
-            label = { Text("Descrição da Receita") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Button(
-            onClick = {
-                if (receitaParaEditar == null) {
-                    // Adiciona nova receita
-                    receitas.add(Receita(titulo, descricao, receitas.size + 1))
-                } else {
-                    // Atualiza a receita existente
-                    receitaParaEditar.titulo = titulo
-                    receitaParaEditar.descricao = descricao
-                }
-                navController.popBackStack() // Volta para a tela anterior
-            },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(text = if (receitaParaEditar == null) "Salvar Receita" else "Atualizar Receita")
-        }
-
-        Button(
-            onClick = { navController.popBackStack() },
-            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.error),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(text = "Cancelar")
-        }
-    }
-}
-
-
