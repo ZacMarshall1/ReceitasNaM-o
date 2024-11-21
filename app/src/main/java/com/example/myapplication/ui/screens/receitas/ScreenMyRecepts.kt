@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -89,7 +88,13 @@ fun TelaMinhasReceitas(
                     composable("${ReceitaRotas.SCREEN_RECIPE_DETAIL_ROUTE}/{recipeId}") { backStackEntry ->
                         val recipeId = backStackEntry.arguments?.getString("recipeId")?.toIntOrNull()
                         val receitaDetalhe = receitas.find { it.id == recipeId }
-                        DetalhesReceitaScreen(receitaDetalhe)
+                        DetalhesReceitaScreen(
+                            navController = navCtrlReceitas,
+                            receita = receitaDetalhe,
+                            excluirReceita = { id ->
+                                receitas.removeIf { it.id == id } // Remove receita da lista
+                            }
+                        )
                     }
                 }
             }
@@ -102,7 +107,6 @@ fun TelaMinhasReceitas(
 @Composable
 private fun ScreenReceptListing(receitas: MutableList<Receita>, navController: NavController) {
     val rows = (receitas.size + 2) / 3
-    var receitaParaExcluir by remember { mutableStateOf<Receita?>(null) }
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -150,14 +154,6 @@ private fun ScreenReceptListing(receitas: MutableList<Receita>, navController: N
                                         style = MaterialTheme.typography.bodyMedium,
                                         textAlign = TextAlign.Center
                                     )
-                                    Spacer(modifier = Modifier.height(8.dp))
-                                    IconButton(onClick = { receitaParaExcluir = currentReceita }) {
-                                        Icon(
-                                            imageVector = Icons.Default.Delete,
-                                            contentDescription = "Excluir Receita",
-                                            tint = MaterialTheme.colorScheme.error
-                                        )
-                                    }
                                 }
                             }
                         }
@@ -166,41 +162,6 @@ private fun ScreenReceptListing(receitas: MutableList<Receita>, navController: N
                     }
                 }
             }
-        }
-        if (receitaParaExcluir != null) {
-            AlertDialog(
-                onDismissRequest = { receitaParaExcluir = null },
-                title = { Text("Confirmar Exclusão") },
-                text = { Text("Tem certeza de que deseja excluir a receita \"${receitaParaExcluir?.titulo}\"?") },
-                confirmButton = {
-                    TextButton(onClick = {
-                        receitas.remove(receitaParaExcluir) // Remove a receita
-                        receitaParaExcluir = null
-                    }) {
-                        Text("Sim", color = MaterialTheme.colorScheme.error)
-                    }
-                },
-                dismissButton = {
-                    TextButton(onClick = { receitaParaExcluir = null }) {
-                        Text("Cancelar")
-                    }
-                }
-            )
-        }
-    }
-}
-
-@Composable
-private fun DetalhesReceitaScreen(receita: Receita?) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        receita?.let {
-            Text(text = "Detalhes da Receita: ${it.titulo}", fontSize = 24.sp)
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(text = "Descrição: ${it.descricao}", fontSize = 18.sp)
         }
     }
 }

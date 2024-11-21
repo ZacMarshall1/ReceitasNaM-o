@@ -12,80 +12,56 @@ import androidx.navigation.NavController
 @Composable
 fun DetalhesReceitaScreen(
     navController: NavController,
-    receita: Receita?, // A receita pode ser nula
-    editarReceita: (Int, String, String, String) -> Unit // Função para editar receita
+    receita: Receita?, // Receita a ser detalhada
+    excluirReceita: (Int) -> Unit // Função para excluir a receita
 ) {
-    // Verificação de nulidade para inicializar os estados
-    val descricaoInicial = receita?.descricao ?: ""
-
-    // Estados para os campos de edição
-    var descricao by remember { mutableStateOf(descricaoInicial) }
-    var isEditing by remember { mutableStateOf(false) } // Controle para exibir os campos de edição
-
     if (receita == null) {
-        // Se a receita não for encontrada, exibe uma mensagem de erro
-        Text(text = "Receita não encontrada")
+        // Caso a receita seja nula
+        Text(
+            text = "Receita não encontrada",
+            modifier = Modifier.padding(16.dp),
+            style = MaterialTheme.typography.bodyLarge
+        )
         return
     }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(24.dp), // Espaçamento externo aumentado
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Título da tela
         Text(
-            text = "Detalhes da Receita: ${receita.titulo}",
-            fontSize = 24.sp,
-            style = MaterialTheme.typography.titleLarge
+            text = "Detalhes da Receita",
+            fontSize = 28.sp, // Fonte maior para o título
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.padding(bottom = 32.dp) // Espaçamento abaixo do título
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Text(
+            text = "Nome: ${receita.titulo}",
+            fontSize = 20.sp,
+            style = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier.padding(bottom = 24.dp) // Espaçamento abaixo do nome
+        )
 
-        // Exibe os detalhes da receita
-        if (!isEditing) {
-            // Modo visualização
-            Text(text = "Descrição: ${receita.descricao}")
-            Spacer(modifier = Modifier.height(8.dp))
-        } else {
-            // Modo edição
-            TextField(
-                value = descricao,
-                onValueChange = { descricao = it },
-                label = { Text("Descrição") },
-                modifier = Modifier.fillMaxWidth()
-            )
+        Text(
+            text = "Descrição: ${receita.descricao}",
+            fontSize = 18.sp,
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.padding(bottom = 32.dp) // Espaçamento abaixo da descrição
+        )
 
-            Spacer(modifier = Modifier.height(16.dp))
-
-        }
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // Botão para editar ou salvar alterações
-        if (isEditing) {
-            Button(
-                onClick = {
-                    receita?.let {
-                        // Atualiza a receita com as novas informações
-                        isEditing = false // Desativa o modo de edição
-                    }
-                },
-                modifier = Modifier.align(Alignment.End)
-            ) {
-                Text("Salvar")
-            }
-        } else {
-            // Botão para entrar no modo de edição
-            Button(
-                onClick = {
-                    isEditing = true // Ativa o modo de edição
-                },
-                modifier = Modifier.align(Alignment.End)
-            ) {
-                Text("Editar Receita")
-            }
+        // Botão de exclusão
+        Button(
+            onClick = {
+                excluirReceita(receita.id) // Chama a função para excluir a receita pelo ID
+                navController.popBackStack() // Retorna para a tela anterior
+            },
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
+            modifier = Modifier.padding(top = 16.dp) // Espaçamento acima do botão
+        ) {
+            Text("Excluir Receita")
         }
     }
 }
